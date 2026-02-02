@@ -10,7 +10,7 @@ CryptForge provides a unified interface for various encryption methods. It creat
 
 *   **Modularity First**: Every encryption algorithm is a class inheriting from `EncryptionLogic`. Adding a new cipher should never require changing the core CLI code.
 *   **Transparency**: No "magic" obfuscation. The code does exactly what it says.
-*   **User Experience**: Simple commands (`encrypt`, `decrypt`). Interactive password handling for security. Clean output.
+*   **User Experience**: Hybrid design. Simple commands for automation and a robust Interactive TUI for guided human use. Interactive password handling for security. Clean output.
 *   **Education & Utility**: Supports educational ciphers (Caesar, Enigma) alongside production-grade crypto (AES-256-GCM).
 *   **Defensive Design**: Specific exception handling ensures the tool is resilient to user error (invalid paths, bad passwords) without crashing or swallowing system signals.
 

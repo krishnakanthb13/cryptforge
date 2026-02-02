@@ -3,12 +3,42 @@
 
 A modular, cross-platform CLI tool for encryption, decryption, and encoding. Built with Python.
 
+==========================================
+       CryptForge - Main Menu
+==========================================
+ 1. Encrypt a File
+ 2. Decrypt a File
+ 3. View History  
+ 4. List Logics   
+ 5. Help          
+ 0. Exit          
+==========================================
+
+==========================================
+       Select Encrypt Logic
+==========================================
+ 1. a1z26         14. caesar        27. railfence     
+ 2. adfgx         15. case          28. rc4           
+ 3. aes           16. enigma        29. replace       
+ 4. affine        17. hash          30. reverse       
+ 5. ascii85       18. hex           31. rot13         
+ 6. bacon         19. hmac          32. substitution  
+ 7. base32        20. integer       33. tapcode       
+ 8. base64        21. morse         34. trifid        
+ 9. baudot        22. nato          35. unicode       
+10. bifid         23. nihilist      36. url           
+11. bitwise       24. numeral       37. vigenere      
+12. blowfish      25. polybius      38. xor           
+13. bootstring    26. punycode      
+==========================================
+
 ## Features
 *   **Production Grade**: Secure AES-256-GCM encryption with PBKDF2 key derivation.
 *   **Classic Ciphers**: Caesar, Vigenère, Enigma Machine, Rail Fence, Bacon, and more.
 *   **Encodings**: Base64, Hex, Binary, Morse Code, Baudot, Punycode, Bootstring.
 *   **Polybius Variants**: ADFGX, Nihilist, Bifid, Trifid, Tap Code.
 *   **Robust CLI**: Clean error handling, operation history, and audit logging.
+*   **Interactive TUI**: Easy-to-use terminal menu for guided operations and logic selection.
 *   **Extensible**: Easily add new logic via the modular plugin system.
 
 ## Quick Start
@@ -23,11 +53,12 @@ A modular, cross-platform CLI tool for encryption, decryption, and encoding. Bui
     ```
 3.  **Run**:
     ```bash
-    # See help
-    python main.py --help
+    # Run Interactive Menu (Recommended for New Users)
+    ./launcher.bat  # Windows
+    ./launcher.sh   # Linux/macOS
     
-    # List available ciphers
-    python main.py logics
+    # Or use direct CLI commands
+    python main.py --help
     ```
 
 ## Usage Examples

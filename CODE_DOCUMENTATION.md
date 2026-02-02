@@ -17,7 +17,8 @@ cryptforge/
 │   ├── plugin_loader.py    # Dynamic plugin discovery
 │   ├── security.py         # Password handling
 │   ├── file_ops.py         # File I/O
-│   └── history.py          # JSON History tracking
+│   ├── history.py          # JSON History tracking
+│   └── interactive.py      # TUI Menu logic
 └── ...
 ```
 
@@ -40,9 +41,15 @@ The `EncryptionLogic` abstract base class enforces a standard interface:
 
 ### 3. CLI Dispatch (`cli.py`)
 Uses `argparse` to handle user input and orchestrates the encryption/decryption process.
-*   **Encrypt**: Loads logic -> Reads file -> Prompts password -> Encrypts -> Writes `.enc` file.
-*   **Decrypt**: Loads logic -> Reads file -> Prompts password -> Decrypts -> Writes decoded file.
+*   **Encrypt/Decrypt**: Standard argument-based commands.
+*   **Menu**: Launches the interactive TUI.
 *   **Error Handling**: Specifically catches `ValueError`, `FileNotFoundError`, `FileExistsError`, and `IOError` to provide user-friendly messages while allowing system signals (like Ctrl+C) to pass through.
+
+### 4. Interactive TUI (`utils/interactive.py`)
+A self-contained module that provides a Terminal User Interface for users who prefer guided interaction.
+*   **Main Menu**: Navigation between features (Encrypt, Decrypt, History, Help).
+*   **Multi-Column Display**: Efficiently lists 38+ logics in a numbered grid for quick selection.
+*   **Dynamic Discovery**: Loads available logics in real-time using the plugin loader.
 
 ## Data Flow
 
