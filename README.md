@@ -3,6 +3,7 @@
 
 A modular, cross-platform CLI tool for encryption, decryption, and encoding. Built with Python.
 
+```
 ==========================================
        CryptForge - Main Menu
 ==========================================
@@ -31,6 +32,7 @@ A modular, cross-platform CLI tool for encryption, decryption, and encoding. Bui
 12. blowfish      25. polybius      38. xor           
 13. bootstring    26. punycode      
 ==========================================
+```
 
 ## Features
 *   **Production Grade**: Secure AES-256-GCM encryption with PBKDF2 key derivation.
