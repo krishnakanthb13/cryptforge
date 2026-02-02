@@ -1,47 +1,45 @@
 # Contributing to CryptForge
 
-Thank you for your interest in contributing to CryptForge! We welcome contributions from the community to help make this tool better.
+First off, thank you for considering contributing to CryptForge! It's people like you who make it a great tool.
 
-## Bug Reports
+## How Can I Contribute?
 
-If you find a bug, please create a GitHub issue using the following template:
+### Adding New Encryption Logics
+The easiest way to contribute is by adding new algorithms!
+1. Check the `logics/` directory to see existing implementations.
+2. Create a new file (or add to an existing one) in `logics/`.
+3. Inherit from `EncryptionLogic` in `logics/base.py`.
+4. Implement the `encrypt` and `decrypt` methods.
+5. Add a unit test in `unit_tests/` (following the existing patterns).
 
-**Title**: [BUG] Short description
-**Description**: Detailed explanation of the issue.
-**Steps to Reproduce**:
-1. Run command `...`
-2. Enter `...`
-3. Error occurs.
-**Expected Behavior**: What should happen?
-**Actual Behavior**: What actually happened?
-**Environment**: OS, Python version.
+### Reporting Bugs
+If you find a bug, please open an issue on GitHub. Include:
+- Your operating system.
+- The command you ran.
+- The error message or unexpected behavior.
 
-## Feature Suggestions
+### Suggesting Enhancements
+We are always looking for ways to make CryptForge better. Suggest new features or UI improvements by opening an issue.
 
-We love new ideas! Please open an issue with the title `[FEATURE]`.
-Describe the feature, why it's useful, and how you envision it working.
+## Development Setup
 
-## Development Workflow
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/krishnakanthb13/cryptforge.git
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Run the tests to ensure everything is working:
+   ```bash
+   python unit_tests/run_all.py
+   ```
 
-1.  **Fork** the repository.
-2.  **Clone** your fork locally.
-3.  **Create a Branch** for your feature/fix: `git checkout -b feature/my-new-feature`.
-4.  **Install Dependencies**: `pip install -r requirements.txt`.
-5.  **Make Changes**: Write clean, documented code.
-6.  **Test**: Ensure your changes work and don't break existing functionality.
-7.  **Commit**: Use clear, descriptive commit messages.
-8.  **Push**: `git push origin feature/my-new-feature`.
-9.  **Pull Request**: Open a PR against the `main` branch.
+## Style Guide
+- Use Python 3.8+.
+- Follow PEP 8 for code style.
+- Ensure all new logic classes have a clear `description`.
+- Document your code where necessary.
 
-## Local Development Setup
-
-1.  Clone the repo.
-2.  Run `pip install -r requirements.txt`.
-3.  Run `python main.py` to test the CLI.
-
-## Pre-submission Checklist
-
--   [ ] Code follows PEP 8 style guide.
--   [ ] New features are documented.
--   [ ] Tests (manual or automated) pass.
--   [ ] No sensitive data or secrets committed.
+Thank you for contributing! 🛡️

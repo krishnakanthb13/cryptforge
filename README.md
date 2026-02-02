@@ -64,6 +64,13 @@ A modular, cross-platform CLI tool for encryption, decryption, and encoding. Bui
     python main.py --help
     ```
 
+4. **Install as CLI Tool (Optional)**:
+   ```bash
+   pip install .
+   # Now you can use 'cryptforge' from anywhere!
+   cryptforge menu
+   ```
+
 ## Usage Examples
 
 **Encrypt with AES (Default)**

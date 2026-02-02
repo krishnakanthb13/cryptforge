@@ -7,6 +7,15 @@ from utils.file_ops import read_file, write_file
 from utils.logging import setup_logging, log_operation
 from utils.history import save_history_entry, get_recent_history
 
+BANNER = r"""
+   ______                      __ ______                      
+  / ____/________  ______  / /_/ ____/___  _________ ____ 
+ / /   / ___/ __ \/ __ \/ __/ /_  / __ \/ ___/ __ `/ _ \
+/ /___/ /  / /_/ / /_/ / /_/ __/ / /_/ / /  / /_/ /  __/
+\____/_/   \____/ ____/\__/_/   \____/ /   \__, /\___/ 
+               /_/                         /____/       
+"""
+
 def run():
     """
     Main CLI execution function.
@@ -123,5 +132,6 @@ def run():
             logic = logic_cls()
             print(f"  - {name}: {logic.description}")
     elif args.command == "menu":
+        print(BANNER)
         from utils.interactive import run_interactive_menu
         run_interactive_menu()

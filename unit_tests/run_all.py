@@ -16,10 +16,21 @@ def run_all_tests():
         f.write(f"CryptForge Unit Test Run - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write("="*60 + "\n\n")
         
-        # We'll use a TextTestRunner but we want to capture output
-        runner = unittest.TextTestRunner(stream=f, verbosity=2)
+        # Create a runner that writes to both file and console
+        class TeeRunner(unittest.TextTestRunner):
+            def run(self, test):
+                # We'll just use the standard runner but we want the summary in both
+                return super().run(test)
+
+        print(f"Running {suite.countTestCases()} tests...")
+        runner = unittest.TextTestRunner(stream=sys.stdout, verbosity=1)
+        # Capture file output separately
+        file_runner = unittest.TextTestRunner(stream=f, verbosity=2)
+        
+        # We'll run it once and manually log summary to file
         result = runner.run(suite)
         
+        # Rewind and log to file (standard way)
         f.write("\n" + "="*60 + "\n")
         f.write(f"Tests Run: {result.testsRun}\n")
         f.write(f"Errors: {len(result.errors)}\n")
