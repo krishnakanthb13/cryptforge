@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.idea/
+.vscode/
+logs/
+history/
+*.log
+# *.enc
+*.dec
+LICENSE_TEMP
