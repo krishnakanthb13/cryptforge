@@ -36,6 +36,9 @@ def run():
     
     # List Logics Command
     subparsers.add_parser("logics", help="List available encryption logics")
+    
+    # Interactive Menu Command
+    subparsers.add_parser("menu", help="Launch interactive selection menu")
 
     args = parser.parse_args()
     
@@ -119,3 +122,6 @@ def run():
             # Instantiate to get description
             logic = logic_cls()
             print(f"  - {name}: {logic.description}")
+    elif args.command == "menu":
+        from utils.interactive import run_interactive_menu
+        run_interactive_menu()

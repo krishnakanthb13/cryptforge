@@ -31,15 +31,17 @@ if %errorlevel% neq 0 (
 )
 
 :: 3. Launch Application
-echo [INFO] Starting CryptForge...
-:: Pass all arguments (%*) to the main script
-python main.py %*
-
-:: 4. Pause on exit if no arguments provided (double-click mode)
 if "%1"=="" (
-    echo.
-    echo Application exited.
-    pause
+    python main.py menu
+) else (
+    echo [INFO] Starting CryptForge with arguments...
+    python main.py %*
 )
+goto END
+
+:END
+echo.
+pause
+exit /b 0
 
 endlocal

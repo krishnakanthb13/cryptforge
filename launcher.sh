@@ -39,8 +39,13 @@ if ! python3 -c "import cryptography" &> /dev/null; then
 fi
 
 # 4. Launch Application
-log_info "Starting $APP_NAME..."
-python3 "$ENTRY_POINT" "$@"
+if [ $# -eq 0 ]; then
+    python3 "$ENTRY_POINT" menu
+else
+    log_info "Starting $APP_NAME with arguments..."
+    python3 "$ENTRY_POINT" "$@"
+fi
 
-# Exit with the status of the last command
+exit $?
+
 exit $?
