@@ -13,6 +13,7 @@ cryptforge/
 │   ├── ciphers.py          # Classic Ciphers (Caesar, Vigenère...)
 │   ├── encodings.py        # Encodings (Base64, Hex...)
 │   └── ...
+├── unit_tests/             # Automated Unit Tests
 ├── utils/                  # Utilities
 │   ├── plugin_loader.py    # Dynamic plugin discovery
 │   ├── security.py         # Password handling
@@ -47,9 +48,15 @@ Uses `argparse` to handle user input and orchestrates the encryption/decryption 
 
 ### 4. Interactive TUI (`utils/interactive.py`)
 A self-contained module that provides a Terminal User Interface for users who prefer guided interaction.
-*   **Main Menu**: Navigation between features (Encrypt, Decrypt, History, Help).
+*   **Main Menu**: Navigation between features (Encrypt, Decrypt, History, Help, Tests).
 *   **Multi-Column Display**: Efficiently lists 38+ logics in a numbered grid for quick selection.
 *   **Dynamic Discovery**: Loads available logics in real-time using the plugin loader.
+
+### 5. Automated Testing (`unit_tests/`)
+Comprehensive test suite built with `unittest`.
+*   **Logic Coverage**: Individual test files for each logic module (aes, ciphers, polybius, etc.).
+*   **Master Runner**: `run_all.py` performs discovery and generates a summary log (`test_run.log`).
+*   **Validation**: Each logic is tested for round-trip integrity, edge cases (empty data), and specific error handling.
 
 ## Data Flow
 

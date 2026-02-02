@@ -39,6 +39,7 @@ A modular, cross-platform CLI tool for encryption, decryption, and encoding. Bui
 *   **Polybius Variants**: ADFGX, Nihilist, Bifid, Trifid, Tap Code.
 *   **Robust CLI**: Clean error handling, operation history, and audit logging.
 *   **Interactive TUI**: Easy-to-use terminal menu for guided operations and logic selection.
+*   **Automated Testing**: Built-in test suite covering all 38+ logics with detailed logging.
 *   **Extensible**: Easily add new logic via the modular plugin system.
 
 ## Quick Start
@@ -78,6 +79,18 @@ python main.py encrypt message.txt --logic morse
 ```bash
 python main.py decrypt message.txt.enc --logic morse
 ```
+
+## Running Tests
+CryptForge comes with a comprehensive automated test suite.
+
+**Via Interactive Menu:**
+Launch the launcher and select **"Run Unit Tests" (Option 6)**.
+
+**Via CLI:**
+```bash
+python unit_tests/run_all.py
+```
+This will generate a summary log in `unit_tests/test_run.log`.
 
 ## Documentation
 *   [**Design Philosophy**](DESIGN_PHILOSOPHY.md): Why we built this.

@@ -14,3 +14,7 @@ history/
 # *.enc
 *.dec
 LICENSE_TEMP
+
+# Notes
+RELEASE_NOTES.md
+SOCIAL_MEDIA.md
