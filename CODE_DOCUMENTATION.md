@@ -34,13 +34,15 @@ It allows the system to auto-discover new algorithms without manual registration
 The `EncryptionLogic` abstract base class enforces a standard interface:
 *   `name`: Unique identifier (e.g., 'aes').
 *   `description`: Help text.
-*   `encrypt(data, password)`: Returns bytes.
-*   `decrypt(data, password)`: Returns bytes.
+*   `encrypt(data, password)`: Returns bytes. Handles data transformation.
+*   `decrypt(data, password)`: Returns bytes. Reverses the transformation.
+    *   *Note*: Some logics (like Enigma) are symmetric/reciprocal, where encryption and decryption use the same mathematical function.
 
 ### 3. CLI Dispatch (`cli.py`)
-Uses `argparse` to handle user input.
+Uses `argparse` to handle user input and orchestrates the encryption/decryption process.
 *   **Encrypt**: Loads logic -> Reads file -> Prompts password -> Encrypts -> Writes `.enc` file.
 *   **Decrypt**: Loads logic -> Reads file -> Prompts password -> Decrypts -> Writes decoded file.
+*   **Error Handling**: Specifically catches `ValueError`, `FileNotFoundError`, `FileExistsError`, and `IOError` to provide user-friendly messages while allowing system signals (like Ctrl+C) to pass through.
 
 ## Data Flow
 

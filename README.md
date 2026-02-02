@@ -4,11 +4,12 @@
 A modular, cross-platform CLI tool for encryption, decryption, and encoding. Built with Python.
 
 ## Features
-*   **Production Grade**: AES-256-GCM encryption.
-*   **Classic Ciphers**: Caesar, Vigenère, Enigma Machine, Rail Fence, Bacon.
-*   **Encodings**: Base64, Hex, Binary, Morse Code, Baudot, Punycode.
-*   **Polybius Variants**: ADFGX, Nihilist, Bifid, Trifid.
-*   **Extensible**: Easily add new logic via the plugin system.
+*   **Production Grade**: Secure AES-256-GCM encryption with PBKDF2 key derivation.
+*   **Classic Ciphers**: Caesar, Vigenère, Enigma Machine, Rail Fence, Bacon, and more.
+*   **Encodings**: Base64, Hex, Binary, Morse Code, Baudot, Punycode, Bootstring.
+*   **Polybius Variants**: ADFGX, Nihilist, Bifid, Trifid, Tap Code.
+*   **Robust CLI**: Clean error handling, operation history, and audit logging.
+*   **Extensible**: Easily add new logic via the modular plugin system.
 
 ## Quick Start
 1.  **Clone the repo**:

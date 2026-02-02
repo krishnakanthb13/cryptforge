@@ -12,6 +12,7 @@ CryptForge provides a unified interface for various encryption methods. It creat
 *   **Transparency**: No "magic" obfuscation. The code does exactly what it says.
 *   **User Experience**: Simple commands (`encrypt`, `decrypt`). Interactive password handling for security. Clean output.
 *   **Education & Utility**: Supports educational ciphers (Caesar, Enigma) alongside production-grade crypto (AES-256-GCM).
+*   **Defensive Design**: Specific exception handling ensures the tool is resilient to user error (invalid paths, bad passwords) without crashing or swallowing system signals.
 
 ## 4. Target Audience
 *   **Developers**: needing quick encodings/decodings (Base64, Hex).

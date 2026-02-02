@@ -91,6 +91,8 @@ class VigenereCipherLogic(EncryptionLogic):
         return "Vigenère cipher (uses password as key)"
 
     def encrypt(self, data: bytes, password: str) -> bytes:
+        if not password:
+            raise ValueError("Password cannot be empty for Vigenère cipher.")
         text = data.decode('utf-8', errors='replace')
         key = password.upper()
         result = []
@@ -106,6 +108,8 @@ class VigenereCipherLogic(EncryptionLogic):
         return ''.join(result).encode('utf-8')
 
     def decrypt(self, data: bytes, password: str) -> bytes:
+        if not password:
+            raise ValueError("Password cannot be empty for Vigenère cipher.")
         text = data.decode('utf-8', errors='replace')
         key = password.upper()
         result = []
@@ -294,18 +298,11 @@ class BaconCipherLogic(EncryptionLogic):
 
 
 class EnigmaMachineLogic(EncryptionLogic):
-    # Rotors I, II, III
-    ROTOR_I =   "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
-    ROTOR_II =  "AJDKSIRUXBLHWTMCQGZNPYFVOE"
+    """Enigma M3 cipher simulation with Rotors I, II, III and Reflector B."""
+    ROTOR_I = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+    ROTOR_II = "AJDKSIRUXBLHWTMCQGZNPYFVOE"
     ROTOR_III = "BDFHJLCPRTXVZNYEIWGAKMUSQO"
     REFLECTOR_B = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
-    
-    # Notches (Turnover positions)
-    # Royal Flags (R), E, V.
-    # Q -> R, E -> F, V -> W
-    NOTCH_I = 'Q'
-    NOTCH_II = 'E'
-    NOTCH_III = 'V'
 
     @property
     def name(self) -> str:
@@ -315,127 +312,61 @@ class EnigmaMachineLogic(EncryptionLogic):
     def description(self) -> str:
         return "Enigma M3 (Rotors I-II-III, Reflector B). Password=Start Pos (e.g. AAA)"
 
+    @staticmethod
+    def _pass_rotor(idx: int, rotor_str: str, offset: int) -> int:
+        """Forward pass through a rotor."""
+        shifted = (idx + offset) % 26
+        mapped = ord(rotor_str[shifted]) - ord('A')
+        return (mapped - offset) % 26
+
+    @staticmethod
+    def _pass_rotor_rev(idx: int, rotor_str: str, offset: int) -> int:
+        """Reverse pass through a rotor."""
+        target = (idx + offset) % 26
+        found_at = rotor_str.index(chr(target + ord('A')))
+        return (found_at - offset) % 26
+
     def encrypt(self, data: bytes, password: str) -> bytes:
-        # Parse start position from password
-        # Default AAA
+        # Parse start position from password (default AAA)
         start_pos = (password.upper() + "AAA")[:3]
         if not all(c in string.ascii_uppercase for c in start_pos):
             start_pos = "AAA"
-            
+
         r1_pos, r2_pos, r3_pos = [ord(c) - ord('A') for c in start_pos]
-        
-        # Fixed rotor order: I - II - III (Left to Right)
-        # Fast rotor is III (Rightmost)
-        # Reflect is B
-        
         ciphertext = []
         text = data.decode('utf-8', errors='replace').upper()
-        
+
         for c in text:
             if not c.isalpha():
                 ciphertext.append(c)
                 continue
-                
-            # Stepping (Right rotor steps every time)
-            # Double stepping handling
-            # Middle notch
-            at_notch_2 = (self.ROTOR_II[r2_pos] == self.NOTCH_II) # This is WRONG logic for notch checks usually
-            # Notch is checking if current position allows turnover NEXT step
-            # Simplified odometer:
-            
-            # Correct stepping logic for Enigma:
-            # 1. If mid rotor is at notch, turn mid and left.
-            # 2. If right rotor is at notch, turn mid.
-            # 3. Turn right rotor.
-            
-            # Notch positions are fixed on the RING. 
-            # I: Q, II: E, III: V
-            # If rotor is displaying Q, next step moves adjacent.
-            
-            # Let's use simple logic:
-            step_r2 = False
-            step_r1 = False
-            
-            # Check for double step (Middle rotor turnover)
-            # If II is at E, it steps to F AND pushes I
-            # Actually, the check happens BEFORE movement
-            
-            # Mapping position integer to letter: 0=A..
-            
-            # Real Enigma stepping is tricky. Let's do simplified cascade for CLI tool
-            # Right (III) always steps
+
+            # Simplified odometer stepping: R3 always steps, cascade on wrap
             r3_pos = (r3_pos + 1) % 26
-            
-            # Check if III passed notch V (from V to W)
-            # Notch is at 'V' (21). If it WAS 21 and is now 22...
-            # Or just check if it IS at 'V' before stepping?
-            # Standard: if rotor IS at notch, next step moves neighbor.
-            
-            # Let's implement simplified "odometer":
-            # If R3 wraps 25->0, R2 steps.
-            # If R2 wraps 25->0, R1 steps.
-            # This ignores the specific Notch positions (Q, E, V) but provides decent scrambling.
-            # However, standard Enigma compatibility requires specific notches.
-            # I'll stick to odometer for simplicity/predictability unless "historical accuracy" is strict.
-            # Given constraints, Odometer is safer to implement bug-free quickly.
-            # Description says "Enigma machine", user expects decent cipher.
-            
-            if r3_pos == 0: # Wrapped
-                 r2_pos = (r2_pos + 1) % 26
-                 if r2_pos == 0:
-                     r1_pos = (r1_pos + 1) % 26
+            if r3_pos == 0:
+                r2_pos = (r2_pos + 1) % 26
+                if r2_pos == 0:
+                    r1_pos = (r1_pos + 1) % 26
 
-            # Forward pass
-            # Input -> Plugboard (skip) -> R3 -> R2 -> R1 -> Ref -> R1 -> R2 -> R3 -> Plug -> Out
-            
+            # Forward pass: R3 -> R2 -> R1 -> Reflector
             idx = ord(c) - ord('A')
-            
-            # Through III
-            # Signal enters at 'idx'.
-            # Rotor shift adds offset.
-            # Core maps pin X to Y.
-            # Output pin Z = Y - offset.
-            
-            # Function for one rotor pass:
-            # input_idx -> + offset -> map -> - offset -> output_idx
-            
-            def pass_rotor(idx, rotor_str, offset):
-                # Shift in
-                shifted = (idx + offset) % 26
-                # Map
-                mapped = ord(rotor_str[shifted]) - ord('A')
-                # Shift out
-                out = (mapped - offset) % 26
-                return out
-                
-            def pass_rotor_rev(idx, rotor_str, offset):
-                # Inverse mapping
-                # We need input that produces 'shifted' at output
-                # mapped = (idx + offset) % 26
-                # find index i such that rotor[i] == chr(mapped + 'A')
-                target = (idx + offset) % 26
-                found_at = rotor_str.index(chr(target + ord('A')))
-                # This 'found_at' is the 'shifted' input, so sub offset
-                out = (found_at - offset) % 26
-                return out
+            c1 = self._pass_rotor(idx, self.ROTOR_III, r3_pos)
+            c2 = self._pass_rotor(c1, self.ROTOR_II, r2_pos)
+            c3 = self._pass_rotor(c2, self.ROTOR_I, r1_pos)
 
-            c1 = pass_rotor(idx, self.ROTOR_III, r3_pos)
-            c2 = pass_rotor(c1, self.ROTOR_II, r2_pos)
-            c3 = pass_rotor(c2, self.ROTOR_I, r1_pos)
-            
             # Reflector
             refl = ord(self.REFLECTOR_B[c3]) - ord('A')
-            
-            # Backward
-            c4 = pass_rotor_rev(refl, self.ROTOR_I, r1_pos)
-            c5 = pass_rotor_rev(c4, self.ROTOR_II, r2_pos)
-            c6 = pass_rotor_rev(c5, self.ROTOR_III, r3_pos)
-            
+
+            # Backward pass: R1 -> R2 -> R3
+            c4 = self._pass_rotor_rev(refl, self.ROTOR_I, r1_pos)
+            c5 = self._pass_rotor_rev(c4, self.ROTOR_II, r2_pos)
+            c6 = self._pass_rotor_rev(c5, self.ROTOR_III, r3_pos)
+
             ciphertext.append(chr(c6 + ord('A')))
-            
+
         return ''.join(ciphertext).encode('utf-8')
 
     def decrypt(self, data: bytes, password: str) -> bytes:
-        # Enigma is symmetric (Reciprocal)
+        # Enigma is symmetric (reciprocal)
         return self.encrypt(data, password)
 

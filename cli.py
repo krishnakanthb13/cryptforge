@@ -66,7 +66,7 @@ def run():
             log_operation("encrypt", args.file, logic.name, "success")
             save_history_entry("encrypt", args.file, logic.name, "success")
             
-        except Exception as e:
+        except (ValueError, FileNotFoundError, FileExistsError, IOError) as e:
             print(f"Error: {e}")
             log_operation("encrypt", args.file, args.logic, "failure", str(e))
             save_history_entry("encrypt", args.file, args.logic, "failure")
@@ -99,7 +99,7 @@ def run():
             log_operation("decrypt", args.file, logic.name, "success")
             save_history_entry("decrypt", args.file, logic.name, "success")
             
-        except Exception as e:
+        except (ValueError, FileNotFoundError, FileExistsError, IOError) as e:
             print(f"Error: {e}")
             log_operation("decrypt", args.file, args.logic, "failure", str(e))
             save_history_entry("decrypt", args.file, args.logic, "failure")
