@@ -31,13 +31,15 @@ def display_menu(title, options, columns=3):
         print(line)
     print(f"{'='*42}")
 
-def run_interactive_menu():
+def run_interactive_menu(banner=None):
     """Main interactive loop for the TUI."""
     available_logics = load_logics()
     logic_names = sorted(available_logics.keys())
     
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
+        if banner:
+            print(banner)
         display_menu("CryptForge - Main Menu", 
                      ["Encrypt a File", "Decrypt a File", "View History", "List Logics", "Help", "Run Unit Tests", "0. Exit"], 
                      columns=1)

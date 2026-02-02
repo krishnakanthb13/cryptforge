@@ -132,6 +132,5 @@ def run():
             logic = logic_cls()
             print(f"  - {name}: {logic.description}")
     elif args.command == "menu":
-        print(BANNER)
         from utils.interactive import run_interactive_menu
-        run_interactive_menu()
+        run_interactive_menu(banner=BANNER)
