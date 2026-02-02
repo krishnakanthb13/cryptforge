@@ -39,10 +39,10 @@ def run_interactive_menu():
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         display_menu("CryptForge - Main Menu", 
-                     ["Encrypt a File", "Decrypt a File", "View History", "List Logics", "Help", "0. Exit"], 
+                     ["Encrypt a File", "Decrypt a File", "View History", "List Logics", "Help", "Run Unit Tests", "0. Exit"], 
                      columns=1)
         
-        choice = input("\nSelect an option (0-5): ").strip()
+        choice = input("\nSelect an option (0-6): ").strip()
         
         if choice == '0':
             print("Goodbye!")
@@ -126,6 +126,15 @@ def run_interactive_menu():
         elif choice == '5':
             display_help()
             input("\nPress Enter to return to menu...")
+        elif choice == '6':
+            from unit_tests.run_all import run_all_tests
+            # Ensure parent dir is in path for imports in tests
+            sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd())))
+            try:
+                run_all_tests()
+            except SystemExit:
+                pass # Prevent menu from closing on sys.exit
+            input("\nPress Enter to return to menu...")
         else:
             print("Invalid option.")
             input("\nPress Enter to return to menu...")
@@ -156,4 +165,6 @@ def display_help():
     print("\n5. CLI Mode: You can also skip this TUI")
     print("   by passing arguments directly:")
     print("   main.py encrypt file.txt --logic aes")
+    print("\n6. Run Unit Tests: Execute the full")
+    print("   automated test suite for all logics.")
     print(f"{'='*42}")

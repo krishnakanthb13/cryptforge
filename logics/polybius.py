@@ -135,22 +135,27 @@ class TrifidCipherLogic(EncryptionLogic):
 
     def encrypt(self, data: bytes, password: str) -> bytes:
         text = data.decode('utf-8', errors='replace').upper()
-        text = ''.join(c if c in self.CUBE else '+' for c in text if c.isalpha() or c == '+')
+        # Keep only chars in CUBE
+        text = ''.join(c for c in text if c in self.CUBE)
+        if not text:
+            return b""
+            
         layers, rows, cols = [], [], []
         for c in text:
             idx = self.CUBE.index(c)
             layers.append(idx // 9)
             rows.append((idx % 9) // 3)
             cols.append(idx % 3)
-        combined = []
-        for l, r, c in zip(layers, rows, cols):
-            combined.extend([l, r, c])
+            
+        # Fractionation: Concatenate layers, rows, cols
+        combined = layers + rows + cols
+        
         result = []
         for i in range(0, len(combined), 3):
-            if i + 2 < len(combined):
-                idx = combined[i] * 9 + combined[i + 1] * 3 + combined[i + 2]
-                if idx < len(self.CUBE):
-                    result.append(self.CUBE[idx])
+            # Map triplets back to chars
+            idx = combined[i] * 9 + combined[i+1] * 3 + combined[i+2]
+            result.append(self.CUBE[idx])
+            
         return ''.join(result).encode('utf-8')
 
     def decrypt(self, data: bytes, password: str) -> bytes:

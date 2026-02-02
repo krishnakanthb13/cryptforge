@@ -43,7 +43,8 @@ NATO_ALPHABET = {
     'P': 'Papa', 'Q': 'Quebec', 'R': 'Romeo', 'S': 'Sierra', 'T': 'Tango',
     'U': 'Uniform', 'V': 'Victor', 'W': 'Whiskey', 'X': 'X-ray', 'Y': 'Yankee',
     'Z': 'Zulu', '0': 'Zero', '1': 'One', '2': 'Two', '3': 'Three', '4': 'Four',
-    '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine'
+    '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine',
+    ' ': '/'
 }
 NATO_DECODE = {v.upper(): k for k, v in NATO_ALPHABET.items()}
 
@@ -63,6 +64,17 @@ class SpellingAlphabetLogic(EncryptionLogic):
         return encoded.encode('utf-8')
 
     def decrypt(self, data: bytes, password: str) -> bytes:
-        words = data.decode('utf-8', errors='replace').split(' ')
-        decoded = ''.join(NATO_DECODE.get(w.upper(), w) for w in words)
-        return decoded.encode('utf-8')
+        # Split by spaces but handle multiple spaces
+        parts = data.decode('utf-8', errors='replace').split()
+        result = []
+        for p in parts:
+            val = NATO_DECODE.get(p.upper())
+            if val:
+                result.append(val)
+            else:
+                # If not in dictionary, keep original if single char or skip
+                if len(p) == 1:
+                    result.append(p)
+                elif p == '/':
+                    result.append(' ')
+        return ''.join(result).encode('utf-8')

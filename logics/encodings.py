@@ -165,6 +165,8 @@ class BaudotCodeLogic(EncryptionLogic):
         return ''.join(res).encode('utf-8')
 
 
+import codecs
+
 class PunycodeLogic(EncryptionLogic):
     @property
     def name(self) -> str:
@@ -183,7 +185,9 @@ class PunycodeLogic(EncryptionLogic):
 
     def decrypt(self, data: bytes, password: str) -> bytes:
         try:
-            return data.decode('ascii').decode('punycode').encode('utf-8')
+            # data is bytes, punycode decode returns str
+            decoded_str = codecs.decode(data, 'punycode')
+            return decoded_str.encode('utf-8')
         except Exception:
              return b""
 
@@ -206,7 +210,8 @@ class BootstringLogic(EncryptionLogic):
 
      def decrypt(self, data: bytes, password: str) -> bytes:
          try:
-             return data.decode('ascii').decode('punycode').encode('utf-8')
+             decoded_str = codecs.decode(data, 'punycode')
+             return decoded_str.encode('utf-8')
          except:
              return b""
 
