@@ -1,0 +1,3 @@
+Hello, CryptForge!
+This is a test file to verify encryption and decryption.
+Secret data inside.
